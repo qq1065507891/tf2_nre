@@ -3,6 +3,7 @@ import codecs
 import pickle
 import time
 import matplotlib.pyplot as plt
+import numpy as np
 
 from datetime import timedelta
 
@@ -55,3 +56,25 @@ def get_time_idf(start_time):
     end_time = time.time()
     time_idf = end_time - start_time
     return timedelta(seconds=int(round(time_idf)))
+
+
+def load_embedding(path):
+    lines = read_file(path)
+    embeddings_index = {}
+    for i, line in enumerate(lines):
+        if i == 0:
+            continue
+        values = line.split()
+        embed = np.asarray(values[1:], dtype='float32')
+        embeddings_index[values[0]] = embed
+    return embeddings_index
+
+
+def get_embedding_matrix(config, embeddings_index, vocab):
+    embedding_matrix = np.zeros((len(vocab.word2id), config.word_dim))
+
+    for i, v in vocab.word2id.items():
+        embedding_vector = embeddings_index.get(i)
+        if embedding_vector is not None:
+            embedding_matrix[v] = embedding_vector
+    return embedding_matrix
