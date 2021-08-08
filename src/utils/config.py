@@ -11,6 +11,8 @@ class Config(object):
     model_name = 'TextCNN'
     model_pkl = os.path.join(root_path, 'model/text_cnn.h5')
 
+    embedding = True
+
     epochs = 100
     batch_size = 8
     learning_rate = 0.001
@@ -20,7 +22,7 @@ class Config(object):
     pos_limit = 50
 
     pos_size = 102  # 2*pos_limit + 2
-    word_dim = 200
+    word_dim = 100
 
     dropout = 0.5
     out_channels = 256
