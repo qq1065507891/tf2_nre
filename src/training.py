@@ -30,17 +30,20 @@ def train(config, model_name):
     if not os.path.exists(config.out_path):
         process(config)
 
+    embedding_matrix = None
     train_data_path = os.path.join(config.out_path, 'train.pkl')
     test_data_path = os.path.join(config.out_path, 'test.pkl')
     vocab_path = os.path.join(config.out_path, 'vocab.pkl')
-    embedding_path = os.path.join(config.data_path, 'vec.txt')
 
-    embedding = load_embedding(embedding_path)
     train_data = load_pkl(train_data_path, 'train_data')
     test_data = load_pkl(test_data_path, 'test_data')
     vocab = load_pkl(vocab_path, 'vocab')
 
-    embedding_matrix = get_embedding_matrix(config, embedding, vocab)
+    if config.embedding:
+        embedding_path = os.path.join(config.data_path, 'vec.txt')
+        embedding = load_embedding(embedding_path)
+        embedding_matrix = get_embedding_matrix(config, embedding, vocab)
+
     vocab_size = len(vocab.word2id)
     start_time = time.time()
 
